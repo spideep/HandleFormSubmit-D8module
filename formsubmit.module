@@ -38,7 +38,7 @@ function formsubmit_message()
  */
 function formsubmit_mail($name, $message, $to)
 {
-	$msg['from'] = `$name alexisrengifo@gmail.com`;
+	$msg['from'] = `alexisrengifo@gmail.com`;
 	$msg['company'] = 'My Company';
 	$msg['subject'] = t('Contact message sent:');
 	$msg['body'][] = $message;

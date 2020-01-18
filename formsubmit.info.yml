@@ -1,0 +1,6 @@
+name: Form Submit
+description: Handle External contact form submit.
+package: Custom
+type: module
+version: 1.0
+core: 8.x

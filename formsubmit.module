@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Contains formsubmit.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * Implements hook_help().
+ */
+function formsubmit_help($route_name, RouteMatchInterface $route_match)
+{
+	switch ($route_name) {
+			// Main module help for the formsubmit module.
+		case 'help.page.formsubmit':
+			$output = '';
+			$output .= '<h3>' . t('About') . '</h3>';
+			$output .= '<p>' . t('How to send an email programmatically') . '</p>';
+			return $output;
+
+		default:
+	}
+}
+
+/**
+ * Implements hook_help().
+ */
+function formsubmit_message()
+{
+	return "This is a message";
+}
+
+/**
+ * Implements hook_mail().
+ */
+function formsubmit_mail($name, $message, $to)
+{
+	$msg['from'] = `$name alexisrengifo@gmail.com`;
+	$msg['company'] = 'My Company';
+	$msg['subject'] = t('Contact message sent:');
+	$msg['body'][] = $message;
+
+	$module = 'formsubmit';
+	$key = 'form_submit';
+
+	$params['message'] = $msg['body'];
+	$params['company'] = $msg['company'];
+
+	$send = TRUE;
+	$langcode = \Drupal::currentUser()->getPreferredLangcode();
+
+	$mailManager = \Drupal::service('plugin.manager.mail');
+	// try {
+	$result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+
+	if ($result['result'] !== true) {
+		// drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+		return t('There was a problem sending your message and it was not sent.');
+	} else {
+		// drupal_set_message(t('Your message has been sent.'));
+		return t('Your message has been sent.');
+	}
+	// } catch (Exception $e) {
+	// echo 'Caught exception: ',  $e->getMessage(), "\n";
+	// return 'Caught exception: ' .  $e->getMessage() . "\n";
+	// \Drupal::logger('my_module')->error($e->getMessage());
+	// return "";
+	// }
+}
